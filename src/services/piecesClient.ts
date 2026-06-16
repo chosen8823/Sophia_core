@@ -1,5 +1,5 @@
-import { readFileSync, appendFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { readFileSync, appendFileSync, existsSync, mkdirSync } from "node:fs";
+import { resolve, dirname } from "node:path";
 import type { MemoryEntry } from "../schemas/index.js";
 
 const PIECES_OS_URL = "http://localhost:39300/model_context_protocol/2025-03-26/mcp";
@@ -14,21 +14,22 @@ export class PiecesClient {
   private piecesAvailable: boolean | null = null;
 
   async checkPiecesOS(): Promise<boolean> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2000);
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 2000);
       const response = await fetch(PIECES_OS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 1 }),
         signal: controller.signal,
       });
-      clearTimeout(timeout);
       this.piecesAvailable = response.ok;
       return this.piecesAvailable;
     } catch {
       this.piecesAvailable = false;
       return false;
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
@@ -57,6 +58,8 @@ export class PiecesClient {
     }
 
     // Always persist locally as ground truth
+    const dir = dirname(LOCAL_MEMORY_PATH);
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
     appendFileSync(LOCAL_MEMORY_PATH, line, "utf-8");
   }
 

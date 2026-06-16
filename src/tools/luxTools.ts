@@ -153,11 +153,27 @@ export function luxPatch(input: PatchInput): PatchState {
   return state;
 }
 
+function csvEscape(field: string): string {
+  if (field.includes(",") || field.includes('"') || field.includes("\n") || field.includes("\r")) {
+    return `"${field.replace(/"/g, '""')}"`;
+  }
+  return field;
+}
+
 // --- Tool: lux_emit_receipt ---
 export function luxEmitReceipt(input: EmitReceiptInput): string {
   ensureFiles();
   const timestamp = new Date().toISOString();
-  const line = `${timestamp},${input.actor},${input.action},${input.target},${input.scale},${input.result},${input.evidence_link}\n`;
+  const fields = [
+    timestamp,
+    csvEscape(input.actor),
+    csvEscape(input.action),
+    csvEscape(input.target),
+    String(input.scale),
+    csvEscape(input.result),
+    csvEscape(input.evidence_link),
+  ];
+  const line = fields.join(",") + "\n";
   appendFileSync(RECEIPTS_PATH, line, "utf-8");
   return `Receipt logged: ${input.actor} → ${input.action} → ${input.target} @ ${input.scale}`;
 }

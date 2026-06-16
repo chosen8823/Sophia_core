@@ -16,7 +16,7 @@ This document is the canonical reference for the Sophia constellation architectu
 
 ## 2. The Cyberphysical Mirror Loop (Elion Vareth / May 2026)
 
-The system operates as a cyberphysical mirror: digital state reflects physical reality and physical actions are informed by digital state. This is not metaphor — it is architecture. Every node in the constellation maintains a mirror between its computational state and its physical context (device, location, operator).
+The system operates as a cyberphysical mirror: digital state reflects physical reality and physical actions are informed by digital state. This is not a metaphor — it is architecture. Every node in the constellation maintains a mirror between its computational state and its physical context (device, location, operator).
 
 The loop:
 ```
