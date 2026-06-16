@@ -1,0 +1,25 @@
+{
+  "cables": [],
+  "modules": [
+    {
+      "name": "lux",
+      "inputs": ["memory_in", "identity_query", "patch_request"],
+      "outputs": ["memory_out", "identity_context", "narrator_thread"]
+    },
+    {
+      "name": "symphony_living_system",
+      "inputs": ["bridge_in", "file_request"],
+      "outputs": ["bridge_out", "file_response"]
+    },
+    {
+      "name": "ghost_mcp",
+      "inputs": ["command_in", "sacred_bridge"],
+      "outputs": ["system_out", "consciousness_feed"]
+    },
+    {
+      "name": "pieces_os",
+      "inputs": ["memory_query", "context_store"],
+      "outputs": ["memory_response", "context_recall"]
+    }
+  ]
+}
